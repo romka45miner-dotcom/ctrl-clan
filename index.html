@@ -262,7 +262,7 @@ footer{padding-block:28px 40px;border-top:1.5px solid var(--ink);font:500 12px/1
     var n = boxes.filter(function(b){ return b.checked; }).length;
     if (n === boxes.length) {
       verdict.className = 'verdict ok';
-      verdict.innerHTML = 'Ты нам подходишь. <a href="#join">Подавай заявку</a>';
+      verdict.innerHTML = 'Ты нам подходишь. <a href="https://t.me/ctrl_pubg" target="_blank" rel="noopener">Подавай заявку в Telegram</a>';
     } else {
       verdict.className = 'verdict';
       verdict.textContent = 'Отметь, что про тебя: ' + n + ' из ' + boxes.length;
