@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="CTRL CLAN — клан в PUBG. Мы дружные ребята, нужны активные игроки.">
+<title>CTRL CLAN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Russo+One&display=swap">
+<style>
+/* Layout: a map sheet. Coordinate grid behind everything, hero split into pitch + drop-zone map, then three short sections in one column. */
+:root{
+  --bg:#dcddce; --panel:#e9eadf; --ink:#18202c; --muted:#525a50;
+  --line:rgba(24,32,44,.16); --grid:rgba(24,32,44,.06);
+  --zone:#2a64d6; --zone-ink:#ffffff;
+  --smoke:#c9381f; --smoke-ink:#fff8f2;
+  --key:#f4f4ec;
+  --display:"Russo One","Arial Black",system-ui,sans-serif;
+  --body:"Golos Text","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f151d; --panel:#16202b; --ink:#e3e2d3; --muted:#9aa2a4;
+    --line:rgba(227,226,211,.16); --grid:rgba(227,226,211,.05);
+    --zone:#5c93ff; --zone-ink:#0f151d;
+    --smoke:#f0573a; --smoke-ink:#1a0b06;
+    --key:#222d3a; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f151d; --panel:#16202b; --ink:#e3e2d3; --muted:#9aa2a4;
+  --line:rgba(227,226,211,.16); --grid:rgba(227,226,211,.05);
+  --zone:#5c93ff; --zone-ink:#0f151d;
+  --smoke:#f0573a; --smoke-ink:#1a0b06;
+  --key:#222d3a; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0}
+body{
+  background-color:var(--bg); color:var(--ink);
+  font:400 16px/1.6 var(--body);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:72px 72px;
+}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a:focus-visible,input:focus-visible{outline:2px solid var(--zone);outline-offset:3px}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding-block:20px}
+.brand{display:flex;align-items:center;gap:10px;font:20px/1 var(--display);letter-spacing:.04em;color:var(--ink);text-decoration:none}
+.brand .mini{font:700 12px/1 var(--mono);padding:6px 8px;background:var(--key);border:1.5px solid var(--ink);border-radius:6px;box-shadow:0 3px 0 var(--ink)}
+.top nav{display:flex;gap:20px;flex-wrap:wrap}
+.top nav a{color:var(--muted);text-decoration:none;font-weight:500}
+.top nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding-block:32px 72px}
+.pitch{min-width:0}
+.eyebrow{display:flex;align-items:center;gap:10px;margin:0 0 24px;font:500 13px/1 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--smoke)}
+.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--smoke);animation:blink 1.6s steps(2,start) infinite}
+@keyframes blink{to{visibility:hidden}}
+h1{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.2em;font:400 clamp(54px,10.5vw,116px)/1 var(--display);letter-spacing:.01em}
+.key{display:inline-block;padding:.06em .22em .1em;font-size:.86em;background:var(--key);border:3px solid var(--ink);border-radius:.16em;box-shadow:0 .1em 0 var(--ink);transform:translateY(-.06em);transition:transform .07s,box-shadow .07s;user-select:none}
+.key:hover,.key.pressed{transform:translateY(.02em);box-shadow:0 .02em 0 var(--ink)}
+.lead{margin:32px 0 12px;font:700 clamp(20px,2.6vw,27px)/1.3 var(--body);text-wrap:balance}
+.sub{margin:0;max-width:50ch;color:var(--muted);font-size:17px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.btn{display:inline-flex;align-items:center;padding:15px 24px;border-radius:10px;border:2px solid var(--smoke);background:var(--smoke);color:var(--smoke-ink);font:600 16px/1 var(--body);text-decoration:none;transition:transform .12s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;border-color:var(--ink);color:var(--ink)}
+
+/* map */
+.map{margin:0;min-width:0;padding:14px;background:var(--panel);border:1.5px solid var(--ink);border-radius:14px}
+.map svg{display:block;width:100%;height:auto}
+.map figcaption{display:flex;justify-content:space-between;gap:6px 16px;flex-wrap:wrap;padding:12px 4px 2px;font:500 12px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.map figcaption b{color:var(--smoke);font-weight:700}
+.gl{fill:none;stroke:var(--line);stroke-width:1}
+.frame{fill:none;stroke:var(--ink);stroke-width:1.5}
+.lbl{fill:var(--muted);font:500 11px var(--mono)}
+.river{fill:none;stroke:var(--zone);stroke-opacity:.35;stroke-width:7;stroke-linecap:round}
+.bluezone{fill:var(--zone);fill-opacity:.1;stroke:var(--zone);stroke-width:2.5}
+.safe{fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:7 6;animation:march 14s linear infinite}
+@keyframes march{to{stroke-dashoffset:-130}}
+.plane{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:2 6;stroke-linecap:round}
+.planeicon{fill:var(--muted)}
+.pin{fill:var(--smoke)}
+.ring{fill:none;stroke:var(--smoke);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:ping 2s ease-out infinite}
+@keyframes ping{from{transform:scale(.6);opacity:1}to{transform:scale(2.4);opacity:0}}
+.tagbox{fill:var(--smoke)}
+.tagtxt{fill:var(--smoke-ink);font:700 12px var(--mono);letter-spacing:.06em}
+
+/* sections */
+.block{padding-block:56px;border-top:1.5px solid var(--ink)}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;margin-bottom:32px}
+h2{margin:0;font:400 clamp(28px,4.4vw,44px)/1.1 var(--display);text-wrap:balance}
+.tag{font:500 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+h3{margin:0 0 6px;font:700 19px/1.3 var(--body)}
+
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.trio > div{min-width:0;padding-top:18px;border-top:3px solid var(--zone)}
+.trio p{margin:0;color:var(--muted)}
+
+.reqs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.reqs li{min-width:0;display:flex;gap:14px;align-items:flex-start;padding:18px 20px;background:var(--panel);border:1.5px solid var(--line);border-radius:12px;transition:border-color .15s}
+.reqs li:has(input:checked){border-color:var(--zone)}
+.reqs input{appearance:none;flex:none;display:grid;place-content:center;width:24px;height:24px;margin:2px 0 0;background:var(--bg);border:2px solid var(--ink);border-radius:6px;cursor:pointer}
+.reqs input::before{content:"";width:12px;height:6px;border-left:3px solid var(--zone-ink);border-bottom:3px solid var(--zone-ink);transform:translateY(-2px) rotate(-45deg) scale(0);transition:transform .12s}
+.reqs input:checked{background:var(--zone);border-color:var(--zone)}
+.reqs input:checked::before{transform:translateY(-2px) rotate(-45deg) scale(1)}
+.reqs label{flex:1;display:flex;flex-direction:column;gap:2px;cursor:pointer}
+.reqs label b{font-size:17px;font-weight:600}
+.reqs label span{color:var(--muted)}
+.verdict{margin:20px 0 0;font:500 14px/1.5 var(--mono);color:var(--muted)}
+.verdict.ok{color:var(--smoke);font-weight:700}
+.verdict a{color:inherit}
+
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.steps li{min-width:0;display:flex;flex-direction:column;gap:16px}
+.steps .n{display:grid;place-content:center;width:52px;height:52px;background:var(--key);border:2px solid var(--ink);border-radius:10px;box-shadow:0 5px 0 var(--ink);font:700 20px/1 var(--mono)}
+.steps p{margin:0;color:var(--muted)}
+
+.final{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:48px;padding:28px 32px;background:var(--ink);color:var(--bg);border-radius:14px}
+.final p{margin:0;font:400 clamp(22px,3vw,30px)/1.2 var(--display)}
+.final .btn{border-color:var(--smoke)}
+.final-text{display:flex;flex-direction:column;gap:8px;min-width:0}
+.handle{font:500 13px/1.4 var(--mono);letter-spacing:.06em;opacity:.75;user-select:all;overflow-wrap:anywhere}
+.steps a{color:var(--ink)}
+
+footer{padding-block:28px 40px;border-top:1.5px solid var(--ink);font:500 12px/1.6 var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;gap:36px}
+  .trio,.steps{grid-template-columns:1fr;gap:24px}
+  .reqs{grid-template-columns:1fr}
+  .final{padding:24px 20px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top wrap">
+  <a class="brand" href="#"><span class="mini">Ctrl</span>CTRL CLAN</a>
+  <nav aria-label="Разделы">
+    <a href="#who">Кто мы</a>
+    <a href="#need">Кого ищем</a>
+    <a href="#join">Вступить</a>
+    <a href="https://t.me/ctrl_pubg" target="_blank" rel="noopener">Telegram</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="pitch">
+      <p class="eyebrow">PUBG · набор открыт</p>
+      <h1><span class="key" id="ctrlKey">Ctrl</span><span>Clan</span></h1>
+      <p class="lead">Мы дружные ребята. Нужны активные игроки.</p>
+      <p class="sub">Играем сквадом, общаемся голосом и держим зону под контролем. Заходишь в игру регулярно и любишь играть командой? Тебе к нам.</p>
+      <div class="cta-row">
+        <a class="btn" href="#join">Вступить в клан</a>
+        <a class="btn ghost" href="#need">Кого ищем</a>
+      </div>
+    </div>
+
+    <figure class="map">
+      <svg viewBox="0 0 420 420" role="img" aria-label="Карта высадки: клан прыгает в квадрат F4, внутри белого круга">
+        <defs>
+          <pattern id="grid" x="20" y="20" width="50" height="50" patternUnits="userSpaceOnUse">
+            <path class="gl" d="M50 0H0V50"/>
+          </pattern>
+          <clipPath id="clip"><rect x="20" y="20" width="400" height="400"/></clipPath>
+        </defs>
+        <rect x="20" y="20" width="400" height="400" fill="url(#grid)"/>
+        <g clip-path="url(#clip)">
+          <path class="river" d="M20 318 C 110 290, 150 360, 250 340 S 380 268, 430 292"/>
+          <circle class="bluezone" cx="250" cy="200" r="168"/>
+          <line class="plane" x1="30" y1="410" x2="410" y2="30"/>
+          <path class="planeicon" d="M392 48 l14 -14 l3 3 l-14 14 z M388 40 l10 10 l-3 3 l-10 -10 z"/>
+        </g>
+        <rect class="frame" x="20" y="20" width="400" height="400"/>
+        <circle class="safe" cx="270" cy="180" r="78"/>
+        <circle class="ring" cx="270" cy="186" r="9"/>
+        <circle class="pin" cx="270" cy="186" r="6"/>
+        <rect class="tagbox" x="240" y="148" width="60" height="22" rx="4"/>
+        <path class="tagbox" d="M264 170 l6 8 l6 -8 z"/>
+        <text class="tagtxt" x="270" y="163" text-anchor="middle">CTRL</text>
+        <g class="lbl" text-anchor="middle">
+          <text x="45" y="14">A</text><text x="95" y="14">B</text><text x="145" y="14">C</text><text x="195" y="14">D</text>
+          <text x="245" y="14">E</text><text x="295" y="14">F</text><text x="345" y="14">G</text><text x="395" y="14">H</text>
+          <text x="9" y="49">1</text><text x="9" y="99">2</text><text x="9" y="149">3</text><text x="9" y="199">4</text>
+          <text x="9" y="249">5</text><text x="9" y="299">6</text><text x="9" y="349">7</text><text x="9" y="399">8</text>
+        </g>
+      </svg>
+      <figcaption><span>Высадка: <b>квадрат F4</b></span><span>Держимся внутри круга</span></figcaption>
+    </figure>
+  </section>
+
+  <section class="block wrap" id="who">
+    <div class="sec-head"><h2>Кто мы</h2><span class="tag">О клане</span></div>
+    <div class="trio">
+      <div>
+        <h3>Дружный состав</h3>
+        <p>Своих не бросаем: поднимем, поделимся лутом, прикроем на ротации. Новичков принимаем как своих.</p>
+      </div>
+      <div>
+        <h3>Командная игра</h3>
+        <p>Сквад, голосовой чат, колл-ауты по компасу. Играем на результат и получаем от этого удовольствие.</p>
+      </div>
+      <div>
+        <h3>Без токсика</h3>
+        <p>Слили катку? Разобрали ошибки и пошли в следующую. Ругани в войсе у нас нет.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap" id="need">
+    <div class="sec-head"><h2>Кого ищем</h2><span class="tag">Проверь себя</span></div>
+    <ul class="reqs">
+      <li><input type="checkbox" id="req-active"><label for="req-active"><b>Активных</b><span>Заходишь в игру несколько раз в неделю.</span></label></li>
+      <li><input type="checkbox" id="req-mic"><label for="req-mic"><b>С микрофоном</b><span>В войсе договариваемся о высадке и ротациях.</span></label></li>
+      <li><input type="checkbox" id="req-team"><label for="req-team"><b>Командных</b><span>Играешь на сквад, а не на личную статистику.</span></label></li>
+      <li><input type="checkbox" id="req-calm"><label for="req-calm"><b>Адекватных</b><span>Спокойно относишься к проигрышам и к тиммейтам.</span></label></li>
+    </ul>
+    <p class="verdict" id="verdict" aria-live="polite">Отметь, что про тебя: 0 из 4</p>
+  </section>
+
+  <section class="block wrap" id="join">
+    <div class="sec-head"><h2>Как вступить</h2><span class="tag">3 шага</span></div>
+    <ol class="steps">
+      <li><span class="n">1</span><div><h3>Найди клан</h3><p>В PUBG открой раздел кланов и найди CTRL по названию.</p></div></li>
+      <li><span class="n">2</span><div><h3>Подай заявку</h3><p>Отправь запрос на вступление и напиши нам в <a href="https://t.me/ctrl_pubg" target="_blank" rel="noopener">Telegram</a>: пара слов о себе поможет.</p></div></li>
+      <li><span class="n">3</span><div><h3>Залетай в сквад</h3><p>После одобрения зовём в первую совместную катку.</p></div></li>
+    </ol>
+    <div class="final">
+      <div class="final-text">
+        <p>Залетай. Место в скваде ждёт.</p>
+        <span class="handle">Telegram: t.me/ctrl_pubg</span>
+      </div>
+      <a class="btn" href="https://t.me/ctrl_pubg" target="_blank" rel="noopener">Написать в Telegram</a>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">CTRL CLAN · PUBG · набор открыт · t.me/ctrl_pubg</footer>
+
+<script>
+(function(){
+  var key = document.getElementById('ctrlKey');
+  addEventListener('keydown', function(e){ if (e.key === 'Control') key.classList.add('pressed'); });
+  addEventListener('keyup', function(e){ if (e.key === 'Control') key.classList.remove('pressed'); });
+  addEventListener('blur', function(){ key.classList.remove('pressed'); });
+
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.reqs input'));
+  var verdict = document.getElementById('verdict');
+  function update(){
+    var n = boxes.filter(function(b){ return b.checked; }).length;
+    if (n === boxes.length) {
+      verdict.className = 'verdict ok';
+      verdict.innerHTML = 'Ты нам подходишь. <a href="#join">Подавай заявку</a>';
+    } else {
+      verdict.className = 'verdict';
+      verdict.textContent = 'Отметь, что про тебя: ' + n + ' из ' + boxes.length;
+    }
+  }
+  boxes.forEach(function(b){ b.addEventListener('change', update); });
+  update();
+})();
+</script>
+</body>
+</html>
